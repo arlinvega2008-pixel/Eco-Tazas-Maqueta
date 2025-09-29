@@ -1,0 +1,317 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>EcoTazas – Modelo de negocio inclusivo</title>
+  <meta name="description" content="Maqueta accesible (POUR) de un sitio web para un modelo de negocio inclusivo." />
+
+  <style>
+    :root {
+      --bg: #ffffff;
+      --text: #0b0b0c;
+      --muted: #334155;
+      --brand-green: #16a34a; /* green */
+      --brand-green-strong: #15803d;
+      --brand-blue: #0ea5e9; /* blue */
+      --brand-blue-strong: #0369a1;
+      --card: #f8fafc;
+      --focus: #0ea5e9; /* blue for focus */
+      --border: #e2e8f0;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #0b0b0c;
+        --text: #f6f7f8;
+        --muted: #cbd5e1;
+        --brand-green: #22c55e;
+        --brand-green-strong: #16a34a;
+        --brand-blue: #38bdf8;
+        --brand-blue-strong: #0ea5e9;
+        --card: #101418;
+        --focus: #38bdf8;
+        --border: #1f2937;
+      }
+    }
+    html { scroll-behavior: smooth; }
+    body { margin:0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Helvetica, Arial;
+           background: var(--bg); color: var(--text); line-height:1.6; font-size:16px; }
+    a { color: var(--brand-blue); }
+    a:hover, a:focus { color: var(--brand-blue-strong); }
+    .container { width: min(1120px, 92%); margin: 0 auto; }
+    header { position: sticky; top:0; z-index:10; background: rgba(255,255,255,.85); backdrop-filter: saturate(140%) blur(6px); border-bottom: 1px solid var(--border); }
+    @media (prefers-color-scheme: dark) { header { background: rgba(11,11,12,.85); } }
+    nav { display:flex; align-items:center; justify-content:space-between; padding:.75rem 0; }
+    .brand { display:inline-flex; align-items:center; gap:.5rem; font-weight:800; letter-spacing:.2px; color: var(--brand-green-strong); text-decoration:none; }
+    .brand svg { width:28px; height:28px; color: var(--brand-green); }
+    .menu { display:flex; gap:.5rem; list-style:none; padding:0; margin:0; }
+    .menu a { text-decoration:none; padding:.5rem .75rem; border-radius:.75rem; display:inline-block; }
+    .menu a:focus-visible, .skip:focus { outline: 4px solid var(--focus); outline-offset:3px; }
+    .skip { position:absolute; left:-9999px; top:auto; }
+    .skip:focus { left:1rem; top:1rem; background: var(--focus); color:#111; padding:.5rem .75rem; border-radius:.5rem; }
+    .hero { padding: 3rem 0 2rem; display:grid; gap:2rem; align-items:center; grid-template-columns: 1.2fr 1fr; }
+    @media (max-width: 900px) { .hero { grid-template-columns: 1fr; } }
+    .card { background: var(--card); border: 1px solid var(--border); border-radius: 1.25rem; padding: 1.25rem; }
+    h1,h2,h3 { line-height:1.25; }
+    h1 { font-size: clamp(1.8rem, 3vw, 2.4rem); margin:0 0 .5rem; }
+    h2 { font-size: clamp(1.4rem, 2.4vw, 1.8rem); margin-top: 2rem; }
+    h3 { font-size: clamp(1.1rem, 2vw, 1.2rem); }
+    .grid { display:grid; gap:1rem; grid-template-columns: repeat(3, 1fr); }
+    @media (max-width: 900px) { .grid { grid-template-columns: 1fr; } }
+    .badge { background: var(--brand-green); color: #fff; padding: .25rem .55rem; border-radius: 999px; font-weight:700; font-size:.8rem; }
+    .cta { display:inline-block; text-decoration:none; border-radius:.9rem; padding:.75rem 1rem; font-weight:700; border: 2px solid var(--brand-blue); }
+    .cta.primary { background: var(--brand-blue); color: #fff; border-color: var(--brand-blue-strong); }
+    .cta.secondary { background: #fff; color: var(--brand-green-strong); border-color: var(--brand-green); }
+    .section { padding: 2rem 0; }
+    .table { width:100%; border-collapse:collapse; }
+    .table th, .table td { padding:.75rem; border-bottom:1px solid var(--border); text-align:left; }
+    .help { color: var(--muted); font-size:.95rem; }
+    input, textarea, select, button { font: inherit; }
+    .input { width:100%; padding:.6rem .75rem; border-radius:.75rem; border:1px solid var(--border); background:transparent; color: var(--text); }
+    .input:focus-visible { outline: 4px solid var(--focus); outline-offset:2px; }
+    .footer { border-top: 1px solid var(--border); padding: 2rem 0; }
+    .kpi { display:grid; grid-template-columns: repeat(4, 1fr); gap:1rem; }
+    @media (max-width: 900px) { .kpi { grid-template-columns: repeat(2, 1fr);} }
+    .kpi .card { text-align:center; }
+    .num { font-size: clamp(1.6rem, 3vw, 2.2rem); font-weight: 900; color: var(--brand-green-strong); }
+    .unit { display:block; font-weight:600; color: var(--brand-blue-strong); }
+    @media (prefers-reduced-motion: no-preference) {
+      .fade-in { animation: fade .6s ease both; }
+      @keyframes fade { from { opacity:0; transform: translateY(6px);} to { opacity:1; transform: none;} }
+    }
+  </style>
+</head>
+<body>
+  <a href="#contenido" class="skip">Saltar al contenido principal</a>
+
+  <header role="banner">
+    <div class="container">
+      <nav aria-label="Principal">
+        <a class="brand" href="#inicio" aria-label="Inicio EcoTazas">
+          <svg aria-hidden="true" viewBox="0 0 24 24" focusable="false" xmlns="http://www.w3.org/2000/svg"><path fill="currentColor" d="M12 2l3.5 6.5L22 10l-5 4 .5 7-5.5-3-5.5 3 .5-7-5-4 6.5-1.5z"/></svg>
+          <span>EcoTazas</span>
+        </a>
+        <ul class="menu" role="list">
+          <li><a href="#propuesta">Propuesta de valor</a></li>
+          <li><a href="#impacto">Impacto</a></li>
+          <li><a href="#servicios">Productos/Servicios</a></li>
+          <li><a href="#inclusion">Inclusión</a></li>
+          <li><a href="#precios">Modelo y precios</a></li>
+          <li><a href="#contacto">Contacto</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="contenido" tabindex="-1">
+    <section id="inicio" class="container hero fade-in">
+      <div>
+        <p class="badge" aria-label="Sello de impacto social">Impacto Social</p>
+        <h1>EcoTazas: reutilizables hechas con residuos de café y empleo inclusivo</h1>
+        <p class="help">Promesa de valor única: combinamos <strong>materiales circulares</strong> + <strong>empleo inclusivo</strong> + <strong>personalización B2B</strong> + <strong>logística de retorno</strong>. Esta integración diferenciada evita sustitutos directos.</p>
+        <div style="display:flex; gap:.75rem; margin-top:1rem; flex-wrap: wrap;">
+          <a class="cta primary" href="#contacto">Quiero participar</a>
+          <a class="cta" href="#inclusion">Conoce nuestra inclusión</a>
+        </div>
+      </div>
+      <figure class="card" role="group" aria-labelledby="fig-hero-tit" aria-describedby="fig-hero-desc">
+        <img src="https://placehold.co/800x480" alt="Tazas reutilizables EcoTazas con personas diversas en una cafetería" style="width:100%; border-radius: .75rem;" />
+        <figcaption id="fig-hero-tit"><strong>Imagen representativa</strong></figcaption>
+        <p id="fig-hero-desc" class="help">Descripción significativa para usuarios que no ven la imagen.</p>
+      </figure>
+    </section>
+
+    <section id="propuesta" class="section">
+      <div class="container">
+        <h2>Propuesta de valor</h2>
+        <div class="grid">
+          <article class="card">
+            <h3>Problema</h3>
+            <p>Exceso de desechables en cafeterías y eventos; empleabilidad limitada para mujeres en contextos vulnerables.</p>
+          </article>
+          <article class="card">
+            <h3>Solución inclusiva</h3>
+            <p>Fabricamos tazas reutilizables con residuos de café, empleando y capacitando a mujeres productoras con salarios justos. Integramos economía circular y comercio justo.</p>
+          </article>
+          <article class="card">
+            <h3>Beneficios</h3>
+            <ul>
+              <li>Reducción de desechables en cafeterías asociadas.</li>
+              <li>Ingresos estables y formación continua.</li>
+              <li>Trazabilidad del residuo y del impacto.</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="impacto" class="section">
+      <div class="container">
+        <h2>Impacto medible</h2>
+        <p class="help">Estos indicadores pueden actualizarse trimestralmente. Objetivo: comunicar impacto claro, breve y verificable.</p>
+        <div class="kpi">
+          <div class="card" role="group" aria-labelledby="kpi1">
+            <div class="num" id="kpi1">2.5<span class="unit"> toneladas</span></div>
+            <p class="help">Residuos de café aprovechados</p>
+          </div>
+          <div class="card" role="group" aria-labelledby="kpi2">
+            <div class="num" id="kpi2">1,200<span class="unit"> tazas</span></div>
+            <p class="help">Tazas en circulación (economía circular)</p>
+          </div>
+          <div class="card" role="group" aria-labelledby="kpi3">
+            <div class="num" id="kpi3">28<span class="unit"> mujeres</span></div>
+            <p class="help">Empleadas/capacitadas con salario justo</p>
+          </div>
+          <div class="card" role="group" aria-labelledby="kpi4">
+            <div class="num" id="kpi4">-65%<span class="unit"> residuos</span></div>
+            <p class="help">Reducción de desechables en clientes piloto</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="servicios" class="section">
+      <div class="container">
+        <h2>Productos y servicios</h2>
+        <div class="grid" role="list">
+          <article class="card" role="listitem">
+            <h3>Taza EcoTaza estándar</h3>
+            <p class="help">Taza reutilizable hecha con compuestos a base de residuos de café; durable, ligera y apta para bebidas calientes.</p>
+            <a class="cta" href="#contacto">Solicitar</a>
+          </article>
+          <article class="card" role="listitem">
+            <h3>Personalización B2B</h3>
+            <p class="help">Tazas con identidad de marca para cafeterías, empresas y universidades; pedidos al mayoreo y acuerdos de recompra.</p>
+            <a class="cta" href="#contacto">Solicitar</a>
+          </article>
+          <article class="card" role="listitem">
+            <h3>Kits corporativos</h3>
+            <p class="help">Paquetes para eventos: tazas + termos + portavasos con logística de retorno y limpieza.</p>
+            <a class="cta" href="#contacto">Solicitar</a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="inclusion" class="section">
+      <div class="container">
+        <h2>Cómo integramos la inclusión</h2>
+        <div class="grid">
+          <article class="card">
+            <h3>Acceso universal</h3>
+            <ul>
+              <li>Plataforma web accesible (WCAG 2.1 AA) y atención telefónica.</li>
+              <li>Material de capacitación en lectura fácil; opciones de audio y braille bajo solicitud.</li>
+              <li>Puntos de venta en espacios de fácil acceso y señalética clara.</li>
+            </ul>
+          </article>
+          <article class="card">
+            <h3>Empleo inclusivo</h3>
+            <ul>
+              <li>Talleres de manufactura, control de calidad y emprendimiento.</li>
+              <li>Contratación con salarios justos y adecuaciones razonables.</li>
+              <li>Mentorías y certificaciones para el crecimiento profesional.</li>
+            </ul>
+          </article>
+          <article class="card">
+            <h3>Política de precios justos</h3>
+            <ul>
+              <li>Tarifas solidarias para comunidades y estudiantes.</li>
+              <li>Programa de canje: descuento por entrega de residuos de café.</li>
+              <li>Transparencia de costos y trazabilidad del impacto.</li>
+            </ul>
+          </article>
+        </div>
+        <details class="card" style="margin-top:1rem;">
+          <summary><strong>Declaración de accesibilidad</strong></summary>
+          <p>Nos comprometemos a cumplir con WCAG 2.1 AA y la metodología POUR. Si encuentras barreras, escríbenos a <a href="mailto:accesibilidad@ecotazas.mx">accesibilidad@ecotazas.mx</a>.</p>
+        </details>
+      </div>
+    </section>
+
+    <section id="precios" class="section">
+      <div class="container">
+        <h2>Modelo y precios</h2>
+        <div class="card">
+          <table class="table" aria-describedby="tabla-ayuda">
+            <caption>Planes transparentes</caption>
+            <thead>
+              <tr>
+                <th scope="col">Plan</th>
+                <th scope="col">Incluye</th>
+                <th scope="col">Precio</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">Solidario</th>
+                <td>Taza EcoTaza + taller básico + descuento por canje de residuos</td>
+                <td>Por definir</td>
+              </tr>
+              <tr>
+                <th scope="row">Estándar</th>
+                <td>Taza EcoTaza + garantía de 1 año + reposición con descuento</td>
+                <td>Por definir</td>
+              </tr>
+              <tr>
+                <th scope="row">Organizaciones</th>
+                <td>Personalización B2B + logística + capacitación para equipo</td>
+                <td>Por proyecto</td>
+              </tr>
+            </tbody>
+          </table>
+          <p id="tabla-ayuda" class="help">Los precios pueden ajustarse mediante evaluaciones y convenios con cafeterías, empresas y universidades.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="contacto" class="section">
+      <div class="container">
+        <h2>Contacto y participación</h2>
+        <form class="card" aria-describedby="ayuda-contacto" action="#" method="post">
+          <p id="ayuda-contacto" class="help">Campos marcados con * son obligatorios.</p>
+          <div style="display:grid; gap:1rem; grid-template-columns: 1fr 1fr;">
+            <div>
+              <label for="nombre">Nombre*</label>
+              <input id="nombre" name="nombre" class="input" required autocomplete="name" />
+            </div>
+            <div>
+              <label for="email">Correo electrónico*</label>
+              <input id="email" name="email" type="email" class="input" required autocomplete="email" />
+            </div>
+            <div style="grid-column: 1 / -1;">
+              <label for="tema">Tema</label>
+              <select id="tema" name="tema" class="input">
+                <option value="">Selecciona una opción</option>
+                <option>Quiero ser cliente</option>
+                <option>Quiero colaborar</option>
+                <option>Comentarios de accesibilidad</option>
+              </select>
+            </div>
+            <div style="grid-column: 1 / -1;">
+              <label for="mensaje">Mensaje*</label>
+              <textarea id="mensaje" name="mensaje" class="input" rows="5" required></textarea>
+              <p class="help">No compartas datos personales sensibles. Responderemos en 2–3 días hábiles.</p>
+            </div>
+          </div>
+          <div style="margin-top:1rem; display:flex; gap:.75rem; align-items:center; flex-wrap: wrap;">
+            <button type="submit" class="cta primary">Enviar</button>
+            <p class="help" role="status" aria-live="polite">Este es un formulario de ejemplo (maqueta); no envía datos reales.</p>
+          </div>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer" role="contentinfo">
+    <div class="container">
+      <p><strong>EcoTazas</strong> — © <span id="y"></span>. <a href="#inclusion">Accesibilidad</a> · <a href="#contacto">Contacto</a></p>
+      <p class="help">Dirección: [Ciudad, País]. Tel: [ ]. Horario de atención: [ ].</p>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById('y').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
